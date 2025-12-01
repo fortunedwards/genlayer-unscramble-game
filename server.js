@@ -7,6 +7,10 @@ const port = 3001;
 app.use(express.json());
 app.use(express.static('.'));
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 
 
 
