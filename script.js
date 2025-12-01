@@ -283,9 +283,7 @@ async function loadHighScore() {
 
         if (highScoreDisplay) highScoreDisplay.textContent = highScore;
     } catch (err) {
-        // Fallback for local testing
-        highScore = localStorage.getItem('highScore') || 0;
-        if (highScoreDisplay) highScoreDisplay.textContent = highScore;
+        console.error('Failed to load high score:', err);
     }
 }
 
@@ -297,8 +295,7 @@ async function saveScore(score) {
             body: JSON.stringify({ score, playerName })
         });
     } catch (err) {
-        // Fallback for local testing
-        localStorage.setItem('highScore', Math.max(score, localStorage.getItem('highScore') || 0));
+        console.error('Failed to save score:', err);
     }
 }
 
@@ -357,8 +354,8 @@ async function loadLeaderboard() {
             leaderboardList.appendChild(row);
         });
     } catch (err) {
-        // Fallback for local testing
-        leaderboardList.innerHTML = '<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-slate-500 dark:text-slate-400">Leaderboard requires database connection</td></tr>';
+        console.error('Failed to load leaderboard:', err);
+        leaderboardList.innerHTML = '<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-slate-500 dark:text-slate-400">Failed to load leaderboard</td></tr>';
     }
 }
 
@@ -473,7 +470,6 @@ function showHint() {
 
 // Login function
 async function login(name) {
-    console.log('Login function called with name:', name);
     try {
         const response = await fetch('/api/login', {
             method: 'POST',
@@ -486,22 +482,13 @@ async function login(name) {
         loginMessage.textContent = data.message;
         startGame();
     } catch (err) {
-        console.log('API failed, using fallback');
-        // Fallback for local testing without database
-        playerName = name;
-        if (loginMessage) loginMessage.textContent = `Welcome to GenLayer Word Scramble, ${name}!`;
-        startGame();
+        loginMessage.textContent = 'Connection error. Please try again.';
     }
 }
 
 function startGame() {
-    console.log('startGame function called');
-    console.log('loginScreen:', loginScreen);
-    console.log('gameScreen:', gameScreen);
-    
-    if (loginScreen) loginScreen.style.display = 'none';
-    if (gameScreen) gameScreen.style.display = 'block';
-    
+    loginScreen.style.display = 'none';
+    gameScreen.style.display = 'block';
     if (playerInfo) {
         playerInfo.textContent = playerName.charAt(0).toUpperCase();
         playerInfo.title = `Player: ${playerName}`;
@@ -550,14 +537,8 @@ wordInputEl.addEventListener('keypress', (e) => {
 });
 
 startGameBtn.addEventListener('click', () => {
-    console.log('Start game button clicked!');
     const name = playerNameInput.value.trim();
-    console.log('Player name:', name);
-    if (name) {
-        login(name);
-    } else {
-        alert('Please enter your name first!');
-    }
+    if (name) login(name);
 });
 
 nextRoundBtn.addEventListener('click', () => {
