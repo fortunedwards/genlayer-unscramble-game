@@ -88,17 +88,14 @@ const loginScreen = document.getElementById('login-screen');
 const gameScreen = document.getElementById('game-screen');
 const playerNameInput = document.getElementById('player-name');
 const startGameBtn = document.getElementById('start-game-btn');
-const leaderboardBtn = document.getElementById('leaderboard-btn');
-const leaderboardScreen = document.getElementById('leaderboard-screen');
-const leaderboardList = document.getElementById('leaderboard-list');
-const backToLoginBtn = document.getElementById('back-to-login-btn');
+
 const performanceScreen = document.getElementById('performance-screen');
 const roundScoreEl = document.getElementById('round-score');
 const wordsCompletedEl = document.getElementById('words-completed');
 const accuracyEl = document.getElementById('accuracy');
 const hintsUsedEl = document.getElementById('hints-used');
 const nextRoundBtn = document.getElementById('next-round-btn');
-const viewLeaderboardBtn = document.getElementById('view-leaderboard-btn');
+
 const homeBtn = document.getElementById('home-btn');
 const wordsListEl = document.getElementById('words-list');
 const loginMessage = document.getElementById('login-message');
@@ -270,94 +267,11 @@ function updateScore(points) {
     if (score > highScore) {
         highScore = score;
         if (highScoreDisplay) highScoreDisplay.textContent = highScore;
-        saveScore(score);
+        localStorage.setItem('highScore', score);
     }
 }
 
-// API functions
-async function loadHighScore() {
-    try {
-        const response = await fetch('/api/highscore');
-        const data = await response.json();
-        highScore = data.highScore;
 
-        if (highScoreDisplay) highScoreDisplay.textContent = highScore;
-    } catch (err) {
-        console.error('Failed to load high score:', err);
-    }
-}
-
-async function saveScore(score) {
-    try {
-        await fetch('/api/score', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ score, playerName })
-        });
-    } catch (err) {
-        console.error('Failed to save score:', err);
-    }
-}
-
-async function loadLeaderboard() {
-    try {
-        const response = await fetch('/api/leaderboard');
-        const data = await response.json();
-        
-        leaderboardList.innerHTML = '';
-        data.leaderboard.forEach((entry, index) => {
-            const rank = index + 1;
-            const isEven = index % 2 === 1;
-            const isCurrentUser = entry.player_name.toLowerCase() === playerName.toLowerCase();
-            
-            const row = document.createElement('tr');
-            let rowClass = `border-b border-slate-200/50 dark:border-slate-800/50`;
-            
-            if (isCurrentUser) {
-                rowClass += ` bg-primary/10 dark:bg-primary/20 ring-1 ring-inset ring-primary/50`;
-            } else if (isEven) {
-                rowClass += ` bg-slate-50 dark:bg-slate-800/50`;
-            } else {
-                rowClass += ` bg-white dark:bg-slate-900`;
-            }
-            
-            if (index === data.leaderboard.length - 1) {
-                rowClass = rowClass.replace('border-b border-slate-200/50 dark:border-slate-800/50', '');
-            }
-            
-            row.className = rowClass;
-            
-            let rankContent = '';
-            if (rank <= 3) {
-                const iconColor = rank === 1 ? 'text-yellow-500' : rank === 2 ? 'text-gray-400' : 'text-amber-700';
-                rankContent = `
-                    <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined ${iconColor}" style="font-variation-settings: 'FILL' 1;">military_tech</span>
-                        <span>${rank}</span>
-                    </div>
-                `;
-            } else {
-                rankContent = rank.toString();
-            }
-            
-            const playerNameDisplay = isCurrentUser ? `${entry.player_name} (You)` : entry.player_name;
-            const nameClass = isCurrentUser ? 'font-bold text-primary dark:text-blue-300' : 'font-medium text-[#111318] dark:text-white';
-            const scoreClass = isCurrentUser ? 'font-bold text-primary dark:text-blue-300' : 'font-bold text-primary';
-            
-            row.innerHTML = `
-                <td class="h-[72px] px-4 py-2 text-slate-600 dark:text-slate-300">${rankContent}</td>
-                <td class="h-[72px] px-4 py-2 ${nameClass}">${playerNameDisplay}</td>
-                <td class="h-[72px] px-4 py-2 ${scoreClass}">${entry.total_score.toLocaleString()}</td>
-                <td class="h-[72px] px-4 py-2 text-slate-600 dark:text-slate-300">${entry.best_score.toLocaleString()}</td>
-            `;
-            
-            leaderboardList.appendChild(row);
-        });
-    } catch (err) {
-        console.error('Failed to load leaderboard:', err);
-        leaderboardList.innerHTML = '<tr><td colspan="4" class="h-[72px] px-4 py-2 text-center text-slate-500 dark:text-slate-400">Failed to load leaderboard</td></tr>';
-    }
-}
 
 // Show popup notification
 function showPopup(text, type = 'success') {
@@ -468,22 +382,10 @@ function showHint() {
     }, 1000);
 }
 
-// Login function
-async function login(name) {
-    try {
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name })
-        });
-        const data = await response.json();
-        
-        playerName = name;
-        loginMessage.textContent = data.message;
-        startGame();
-    } catch (err) {
-        loginMessage.textContent = 'Connection error. Please try again.';
-    }
+function login(name) {
+    playerName = name;
+    loginMessage.textContent = `Welcome to GenLayer Word Scramble, ${name}!`;
+    startGame();
 }
 
 function startGame() {
@@ -493,12 +395,14 @@ function startGame() {
         playerInfo.textContent = playerName.charAt(0).toUpperCase();
         playerInfo.title = `Player: ${playerName}`;
     }
-    loadHighScore();
+    highScore = localStorage.getItem('highScore') || 0;
+    if (highScoreDisplay) highScoreDisplay.textContent = highScore;
     startNewRound();
 }
 
 // Load high score on page load
-loadHighScore();
+highScore = localStorage.getItem('highScore') || 0;
+if (highScoreDisplay) highScoreDisplay.textContent = highScore;
 
 // Event listeners
 checkBtn.addEventListener('click', checkAnswer);
@@ -545,27 +449,16 @@ nextRoundBtn.addEventListener('click', () => {
     startNewRound();
 });
 
-viewLeaderboardBtn.addEventListener('click', () => {
-    performanceScreen.style.display = 'none';
-    leaderboardScreen.style.display = 'block';
-    loadLeaderboard();
-});
+
 
 homeBtn.addEventListener('click', () => {
     performanceScreen.style.display = 'none';
     loginScreen.style.display = 'block';
 });
 
-leaderboardBtn.addEventListener('click', () => {
-    loginScreen.style.display = 'none';
-    leaderboardScreen.style.display = 'block';
-    loadLeaderboard();
-});
 
-backToLoginBtn.addEventListener('click', () => {
-    leaderboardScreen.style.display = 'none';
-    loginScreen.style.display = 'block';
-});
+
+
 
 playerNameInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -575,31 +468,13 @@ playerNameInput.addEventListener('keypress', (e) => {
 });
 
 // Header event listeners
-const headerLeaderboardLink = document.getElementById('header-leaderboard-link');
 const logoImg = document.querySelector('img[src="logo.png"]');
-
-if (headerLeaderboardLink) {
-    headerLeaderboardLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        // Hide all screens first
-        const allScreens = [loginScreen, gameScreen, performanceScreen, leaderboardScreen];
-        allScreens.forEach(screen => {
-            if (screen) screen.style.display = 'none';
-        });
-        // Show leaderboard screen
-        if (leaderboardScreen) {
-            leaderboardScreen.style.display = 'block';
-            loadLeaderboard();
-        }
-    });
-}
 
 if (logoImg) {
     logoImg.addEventListener('click', () => {
         loginScreen.style.display = 'block';
         gameScreen.style.display = 'none';
         performanceScreen.style.display = 'none';
-        leaderboardScreen.style.display = 'none';
     });
     logoImg.style.cursor = 'pointer';
 }

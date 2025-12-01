@@ -42,7 +42,7 @@
         <!-- Header -->
         <div class="fixed top-0 left-0 right-0 flex justify-between items-center p-3 sm:p-4 lg:p-6 z-50 bg-white/10 backdrop-blur-sm">
             <img src="logo.png" alt="Logo" class="h-6 sm:h-8 w-auto cursor-pointer hover:opacity-80 transition-opacity">
-            <a id="header-leaderboard-link" href="#" class="text-black text-sm sm:text-base lg:text-lg font-medium hover:text-black/80 transition-colors px-2 py-1 rounded hover:bg-white/20">Leaderboard</a>
+
         </div>
         
         <!-- Popup Notification -->
@@ -199,10 +199,7 @@
                                 <span class="material-symbols-outlined text-sm sm:text-base group-hover:rotate-12 transition-transform duration-300">play_arrow</span>
                                 <span class="group-hover:scale-110 transition-transform duration-300">Start Next Round</span>
                             </button>
-                            <button id="view-leaderboard-btn" class="group flex items-center justify-center gap-1 rounded-lg h-8 sm:h-10 text-white text-xs font-normal px-3 sm:px-4 py-1 shadow hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-out" style="background-color: #0d59f2; border: 1px solid #0d59f2;">
-                                <span class="material-symbols-outlined text-sm sm:text-base group-hover:rotate-12 transition-transform duration-300">leaderboard</span>
-                                <span class="group-hover:scale-110 transition-transform duration-300">View Leaderboard</span>
-                            </button>
+
                             <button id="home-btn" class="group flex items-center justify-center gap-1 rounded-lg h-8 sm:h-10 text-white text-xs font-normal px-3 sm:px-4 py-1 shadow hover:shadow-lg transform hover:scale-105 transition-all duration-300 ease-out" style="background-color: #0d59f2; border: 1px solid #0d59f2;">
                                 <span class="material-symbols-outlined text-sm sm:text-base group-hover:scale-110 transition-transform duration-300">home</span>
                                 <span class="group-hover:scale-110 transition-transform duration-300">Home</span>
@@ -213,40 +210,7 @@
             </div>
         </div>
         
-        <div id="leaderboard-screen" class="relative flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-6 lg:p-8 pt-8 sm:pt-10 bg-background-light dark:bg-background-dark" style="display: none;">
-            <div class="w-full max-w-4xl">
-                <!-- Card -->
-                <div class="flex w-full flex-col items-stretch justify-start rounded-xl bg-white dark:bg-slate-900 shadow-lg">
-                    <div class="flex w-full grow flex-col items-stretch justify-center gap-4 p-6 sm:p-8">
-                        <h1 class="text-2xl font-bold tracking-tight text-[#111318] dark:text-white">Global Leaderboard</h1>
-                        <!-- Table Container -->
-                        <div class="w-full overflow-hidden @container">
-                            <div class="overflow-x-auto">
-                                <table class="w-full min-w-full text-left">
-                                    <thead>
-                                        <tr class="border-b border-slate-200 dark:border-slate-700">
-                                            <th class="px-4 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 w-[10%]">Rank</th>
-                                            <th class="px-4 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 w-[40%]">Player Name</th>
-                                            <th class="px-4 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 w-[25%]">Total Score</th>
-                                            <th class="px-4 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 w-[25%]">Best Single-Round Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="leaderboard-list">
-                                        <!-- Leaderboard entries will be populated here -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- Button -->
-                        <div class="flex pt-4 justify-start">
-                            <button id="back-to-login-btn" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-transparent text-primary dark:text-blue-300 text-sm font-bold leading-normal tracking-[0.015em] ring-1 ring-primary/50 dark:ring-blue-300/50 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors">
-                                <span class="truncate">Back to Game</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
     
     <script src="script.js"></script>
