@@ -389,6 +389,12 @@ function login(name) {
 }
 
 function startGame() {
+    if (!loginScreen || !gameScreen) {
+        console.error('Required screens not found');
+        alert('Game screens not found. Please refresh the page.');
+        return;
+    }
+    
     loginScreen.style.display = 'none';
     gameScreen.style.display = 'block';
     if (playerInfo) {
@@ -440,10 +446,18 @@ wordInputEl.addEventListener('keypress', (e) => {
     }
 });
 
-startGameBtn.addEventListener('click', () => {
-    const name = playerNameInput.value.trim();
-    if (name) login(name);
-});
+if (startGameBtn && playerNameInput) {
+    startGameBtn.addEventListener('click', () => {
+        const name = playerNameInput.value.trim();
+        if (name) {
+            login(name);
+        } else {
+            alert('Please enter your name to start the game!');
+        }
+    });
+} else {
+    console.error('Start game button or player name input not found');
+}
 
 nextRoundBtn.addEventListener('click', () => {
     startNewRound();
@@ -460,12 +474,18 @@ homeBtn.addEventListener('click', () => {
 
 
 
-playerNameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        const name = playerNameInput.value.trim();
-        if (name) login(name);
-    }
-});
+if (playerNameInput) {
+    playerNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const name = playerNameInput.value.trim();
+            if (name) {
+                login(name);
+            } else {
+                alert('Please enter your name to start the game!');
+            }
+        }
+    });
+}
 
 // Header event listeners
 const logoImg = document.querySelector('img[src="logo.png"]');
