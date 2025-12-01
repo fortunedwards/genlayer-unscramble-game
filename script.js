@@ -410,8 +410,15 @@ function startGame() {
 highScore = localStorage.getItem('highScore') || 0;
 if (highScoreDisplay) highScoreDisplay.textContent = highScore;
 
+// Debug logging
+console.log('Script loaded');
+console.log('Start game button:', startGameBtn);
+console.log('Player name input:', playerNameInput);
+console.log('Login screen:', loginScreen);
+console.log('Game screen:', gameScreen);
+
 // Event listeners
-checkBtn.addEventListener('click', checkAnswer);
+if (checkBtn) checkBtn.addEventListener('click', checkAnswer);
 hintBtn.addEventListener('click', showHint);
 shuffleBtn.addEventListener('click', () => {
     let scrambled = scrambleWord(currentWord.word);
@@ -447,8 +454,11 @@ wordInputEl.addEventListener('keypress', (e) => {
 });
 
 if (startGameBtn && playerNameInput) {
+    console.log('Adding click listener to start game button');
     startGameBtn.addEventListener('click', () => {
+        console.log('Start game button clicked');
         const name = playerNameInput.value.trim();
+        console.log('Player name:', name);
         if (name) {
             login(name);
         } else {
@@ -457,6 +467,8 @@ if (startGameBtn && playerNameInput) {
     });
 } else {
     console.error('Start game button or player name input not found');
+    console.error('startGameBtn:', startGameBtn);
+    console.error('playerNameInput:', playerNameInput);
 }
 
 nextRoundBtn.addEventListener('click', () => {
