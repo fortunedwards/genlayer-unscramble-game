@@ -1,10 +1,8 @@
 const express = require('express');
 const path = require('path');
-const { neon } = require('@neondatabase/serverless');
+const { sql } = require('@vercel/postgres');
 
 const app = express();
-
-const sql = neon(process.env.DATABASE_URL);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..')));

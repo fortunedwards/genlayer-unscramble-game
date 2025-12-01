@@ -12,32 +12,49 @@ Test your GenLayer knowledge by unscrambling jumbled letters to form blockchain-
 - **Hint System**: Get definitions with 5-second cooldown
 - **Shuffle Feature**: Rearrange letters without penalty
 
-## Setup Instructions
+## Live Demo
+🎮 **Play Now**: [GenLayer Word Scramble](https://your-vercel-url.vercel.app)
+
+## Deployment on Vercel
+
+### 1. Fork/Clone Repository
+```bash
+git clone https://github.com/fortunedwards/genlayer-unscramble-game.git
+cd genlayer-unscramble-game
+```
+
+### 2. Deploy to Vercel
+1. Go to [vercel.com](https://vercel.com) and sign in
+2. Click "New Project" → Import from GitHub
+3. Select this repository
+4. Click "Deploy"
+
+### 3. Add Database (Vercel Postgres)
+1. In your Vercel project dashboard
+2. Go to **Storage** tab
+3. Click **Create Database** → **Postgres**
+4. Vercel automatically configures environment variables
+
+### 4. Redeploy
+- Vercel will automatically redeploy with database integration
+- Your leaderboard will now persist data permanently!
+
+## Local Development
 
 ### 1. Install Dependencies
 ```bash
 npm install
 ```
 
-### 2. PostgreSQL Setup
-1. Install PostgreSQL on your system
-2. Create a database named `genlayer_game`
-3. Update database credentials in `server.js`:
-   - `user`: your PostgreSQL username
-   - `password`: your PostgreSQL password
-   - `host`: usually 'localhost'
-   - `port`: usually 5432
+### 2. Set Up Local Database (Optional)
+For local development, you can use PostgreSQL:
+1. Install PostgreSQL
+2. Create database `genlayer_game`
+3. Set `DATABASE_URL` in `.env`
 
-### 3. Run the Game
+### 3. Run Locally
 ```bash
 npm start
-```
-
-The game will be available at `http://localhost:3001`
-
-### 4. Development Mode (Optional)
-```bash
-npm run dev
 ```
 
 ## How to Play
@@ -48,6 +65,12 @@ npm run dev
 5. Use "New Word" to skip difficult words (counts as miss)
 6. Complete 10 words or reach 3 misses to end the round
 7. Review performance and compete on the leaderboard!
+
+## Tech Stack
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Node.js, Express
+- **Database**: Vercel Postgres
+- **Deployment**: Vercel
 
 ## Database Schema
 - `users`: Player authentication and welcome messages
