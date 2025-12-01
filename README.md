@@ -12,7 +12,7 @@ Test your GenLayer knowledge by unscrambling jumbled letters to form blockchain-
 - **Shuffle Feature**: Rearrange letters without penalty
 
 ## Live Demo
-🎮 **Play Now**: [GenLayer Word Scramble](https://your-vercel-url.vercel.app)
+🎮 **Play Now**: [GenLayer Word Scramble](https://genlayer-unscramble-game.vercel.app/)
 
 ## Deployment on Vercel
 
