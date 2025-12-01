@@ -473,6 +473,7 @@ function showHint() {
 
 // Login function
 async function login(name) {
+    console.log('Login function called with name:', name);
     try {
         const response = await fetch('/api/login', {
             method: 'POST',
@@ -485,16 +486,22 @@ async function login(name) {
         loginMessage.textContent = data.message;
         startGame();
     } catch (err) {
+        console.log('API failed, using fallback');
         // Fallback for local testing without database
         playerName = name;
-        loginMessage.textContent = `Welcome to GenLayer Word Scramble, ${name}!`;
+        if (loginMessage) loginMessage.textContent = `Welcome to GenLayer Word Scramble, ${name}!`;
         startGame();
     }
 }
 
 function startGame() {
-    loginScreen.style.display = 'none';
-    gameScreen.style.display = 'block';
+    console.log('startGame function called');
+    console.log('loginScreen:', loginScreen);
+    console.log('gameScreen:', gameScreen);
+    
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (gameScreen) gameScreen.style.display = 'block';
+    
     if (playerInfo) {
         playerInfo.textContent = playerName.charAt(0).toUpperCase();
         playerInfo.title = `Player: ${playerName}`;
@@ -543,8 +550,14 @@ wordInputEl.addEventListener('keypress', (e) => {
 });
 
 startGameBtn.addEventListener('click', () => {
+    console.log('Start game button clicked!');
     const name = playerNameInput.value.trim();
-    if (name) login(name);
+    console.log('Player name:', name);
+    if (name) {
+        login(name);
+    } else {
+        alert('Please enter your name first!');
+    }
 });
 
 nextRoundBtn.addEventListener('click', () => {
